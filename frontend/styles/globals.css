@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Define custom pastel color variables */
+:root {
+  --foreground-color: #333; /* Default foreground color */
+  --background-color: #f0f0f0; /* Default background color */
+}
+
+/* Apply pastel color scheme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-color: #f0f0f0; /* Dark mode foreground color */
+    --background-color: #333; /* Dark mode background color */
+  }
+}
+
+/* Apply body background and text color */
+body {
+  color: var(--foreground-color); /* Set text color */
+  background-color: var(--background-color); /* Set background color */
+}
+
+/* Additional utilities */
+@layer utilities {
+  /* Add your custom utilities here */
+}
