@@ -2,13 +2,14 @@ package main
 
 import (
 	"log"
-	"math/rand" // Import rand package for generating random numbers
+	"math/rand"
 	"net/http"
 	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 var db *gorm.DB
@@ -34,7 +35,7 @@ func generateRandomString(length int) string {
 	const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 	bytes := make([]byte, length)
 	for i := range bytes {
-		bytes[i] = charset[rand.Intn(len(charset))] // Corrected rand to rand.Intn
+		bytes[i] = charset[rand.Intn(len(charset))]
 	}
 	return string(bytes)
 }
@@ -45,27 +46,23 @@ func createPaste(c echo.Context) error {
 		return err
 	}
 	paste.CreatedAt = time.Now()
-	paste.ID = generateRandomString(6) // Generate random ID
+	paste.ID = generateRandomString(6)
 	db.Create(paste)
 	return c.JSON(http.StatusCreated, paste)
 }
 
 func getPastes(c echo.Context) error {
 	var pastes []Paste
-	// Find all pastes from the database
 	if err := db.Find(&pastes).Error; err != nil {
 		return err
 	}
-	// Return all pastes as JSON
 	return c.JSON(http.StatusOK, pastes)
 }
 
 func getPaste(c echo.Context) error {
 	id := c.Param("id")
 	var paste Paste
-	// Use a prepared statement to interpolate the ID parameter into the query
 	if err := db.Where("id = ?", id).First(&paste).Error; err != nil {
-		// Log the error message
 		log.Println("Error retrieving paste:", err)
 		return err
 	}
@@ -75,9 +72,7 @@ func getPaste(c echo.Context) error {
 func updatePaste(c echo.Context) error {
 	id := c.Param("id")
 	var paste Paste
-	// Use a prepared statement to interpolate the ID parameter into the query
 	if err := db.Where("id = ?", id).First(&paste).Error; err != nil {
-		// Log the error message
 		log.Println("Error retrieving paste:", err)
 		return err
 	}
@@ -94,9 +89,7 @@ func updatePaste(c echo.Context) error {
 func deletePaste(c echo.Context) error {
 	id := c.Param("id")
 	var paste Paste
-	// Use a prepared statement to interpolate the ID parameter into the query
 	if err := db.Where("id = ?", id).First(&paste).Error; err != nil {
-		// Log the error message
 		log.Println("Error retrieving paste:", err)
 		return err
 	}
@@ -107,21 +100,26 @@ func deletePaste(c echo.Context) error {
 func main() {
 	defer db.Close()
 
-	// Initialize Echo instance
 	e := echo.New()
 
-	// Define routes
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
+	}))
+
+	// Routes
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Backend is running alright.\n")
 	})
 
-	// CRUD routes
 	e.POST("/pastes", createPaste)
 	e.GET("/pastes", getPastes)
 	e.GET("/pastes/:id", getPaste)
 	e.PUT("/pastes/:id", updatePaste)
 	e.DELETE("/pastes/:id", deletePaste)
 
-	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
 }
