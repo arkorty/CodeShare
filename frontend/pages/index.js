@@ -73,7 +73,7 @@ const Home = () => {
       fetchPastes();
       setTitle("");
       setContent("");
-      router.push(`/paste/${newPasteId}`); // Redirect to the newly created paste page
+      router.push(`/${newPasteId}`); // Redirect to the newly created paste page
     } catch (error) {
       console.error("Error creating paste:", error);
     }
