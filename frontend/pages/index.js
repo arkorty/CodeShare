@@ -84,8 +84,12 @@ const Home = () => {
       {/* Header */}
       <header className="bg-gray-600 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
-          <CodeIcon fontSize="large" className="mr-2" />{" "}
-          {/* Add the icon here */}
+          <CodeIcon
+            fontSize="large"
+            className="mr-2"
+            onClick={() => router.push("/")}
+            style={{ cursor: "pointer" }}
+          />
           <h1 className="text-lg">CodeShare</h1>
         </div>
       </header>

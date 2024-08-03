@@ -95,7 +95,12 @@ const PastePage = () => {
     <div className="flex flex-col bg-white h-screen">
       <header className="bg-gray-600 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
-          <CodeIcon fontSize="large" className="mr-2" />
+          <CodeIcon
+            fontSize="large"
+            className="mr-2"
+            onClick={() => router.push("/")}
+            style={{ cursor: "pointer" }}
+          />
           <h1 className="text-lg">{paste.title}</h1>
         </div>
       </header>
