@@ -12,18 +12,15 @@ services:
     build: ./database
     ports:
       - "5432:5432"
+    volumes:
+      - pgdb:/var/lib/postgresql/data
     networks:
       - docker
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    networks:
-      - docker
-    depends_on:
-      - backend
 
 networks:
   docker:
     driver: bridge
+
+volumes:
+  pgdb:
+    driver: local

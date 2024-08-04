@@ -20,9 +20,29 @@
 body {
   color: var(--foreground-color); /* Set text color */
   background-color: var(--background-color); /* Set background color */
+  min-height: 100vh; /* Ensure minimum height of viewport */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure root div takes full height */
+body > div {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Reset default margins and paddings */
+html,
+body {
+  padding: 0;
+  margin: 0;
 }
 
 /* Additional utilities */
 @layer utilities {
   /* Add your custom utilities here */
+  .min-h-screen {
+    min-height: 100vh;
+  }
 }

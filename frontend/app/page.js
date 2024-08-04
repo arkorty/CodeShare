@@ -1,24 +1,23 @@
+"use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import CodeIcon from "@mui/icons-material/Code"; // Import the Code icon
+import CodeIcon from "@mui/icons-material/Code";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// FullHeightTextField component
 const FullHeightTextField = ({ label, value, onChange }) => {
   const [rows, setRows] = useState(1);
 
   useEffect(() => {
-    // Calculate rows based on the height of the screen and average line height
     const calculateRows = () => {
-      const lineHeight = 24; // Adjust this value based on your TextField's line height
+      const lineHeight = 24;
       const screenHeight = window.innerHeight;
-      const rowsCount = Math.floor(screenHeight / lineHeight) - 16;
+      const rowsCount = Math.floor(screenHeight / lineHeight) - 10;
       setRows(rowsCount);
     };
 
@@ -44,13 +43,13 @@ const FullHeightTextField = ({ label, value, onChange }) => {
 const Home = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [setPastes] = useState([]);
+  const [pastes, setPastes] = useState([]);
   const [currentPaste] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     fetchPastes();
-  }, []); // Added dependency array to run only once
+  }, []);
 
   const fetchPastes = async () => {
     try {
@@ -69,11 +68,11 @@ const Home = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes`,
         { title, content },
       );
-      const newPasteId = response.data.id; // Assuming the response contains the ID of the newly created paste
+      const newPasteId = response.data.id;
       fetchPastes();
       setTitle("");
       setContent("");
-      router.push(`/${newPasteId}`); // Redirect to the newly created paste page
+      router.push(`/${newPasteId}`);
     } catch (error) {
       console.error("Error creating paste:", error);
     }
@@ -81,21 +80,18 @@ const Home = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Header */}
-      <header className="bg-gray-600 text-white p-2 flex items-center justify-between">
+      <header className="bg-gradient-to-r from-blue-500 via-yellow-500 to-red-500 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
-          <CodeIcon
-            fontSize="large"
-            className="mr-2"
+          <div
+            className="w-12 h-12 flex items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
             onClick={() => router.push("/")}
-            style={{ cursor: "pointer" }}
-          />
-          <h1 className="text-lg">CodeShare</h1>
+          >
+            <CodeIcon fontSize="large" />
+          </div>
+          <h1 className="text-lg ml-2">CodeShare</h1>
         </div>
       </header>
-      {/* Main Content */}
       <div className="flex flex-1 bg-white">
-        {/* Text Box Contents */}
         <div className="flex flex-col flex-1">
           <Grid item xs={12} sm={12}>
             <div className="p-4">

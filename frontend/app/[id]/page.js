@@ -1,27 +1,26 @@
-import { useRouter } from "next/router";
+"use client";
+import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { TextField, Button, Grid } from "@mui/material";
+import { TextField, Button, Grid, IconButton } from "@mui/material";
 import CodeIcon from "@mui/icons-material/Code";
+import CopyIcon from "@mui/icons-material/FileCopy";
 import dotenv from "dotenv";
-
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: "./.env.local" });
 
 const FullHeightTextField = ({ label, value, onChange }) => {
   const [rows, setRows] = useState(1);
 
   useEffect(() => {
-    // Calculate rows based on the height of the screen and average line height
     const calculateRows = () => {
-      const lineHeight = 24; // Adjust this value based on your TextField's line height
+      const lineHeight = 24;
       const screenHeight = window.innerHeight;
-      const rowsCount = Math.floor(screenHeight / lineHeight) - 6;
+      const rowsCount = Math.floor(screenHeight / lineHeight) - 10;
       setRows(rowsCount);
     };
 
     calculateRows();
     window.addEventListener("resize", calculateRows);
-
     return () => window.removeEventListener("resize", calculateRows);
   }, []);
 
@@ -41,8 +40,10 @@ const FullHeightTextField = ({ label, value, onChange }) => {
 
 const PastePage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const params = useParams();
+  const { id } = params;
   const [paste, setPaste] = useState(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +54,7 @@ const PastePage = () => {
         setPaste(response.data);
       } catch (error) {
         console.error("Error fetching paste:", error);
+        router.push("/404");
       }
     };
 
@@ -71,7 +73,6 @@ const PastePage = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes/${id}`,
         paste,
       );
-      router.push("/");
     } catch (error) {
       console.error("Error saving paste:", error);
     }
@@ -87,21 +88,59 @@ const PastePage = () => {
     }
   };
 
+  const handleCopyId = () => {
+    navigator.clipboard
+      .writeText(id)
+      .then(() => {
+        console.log("ID copied to clipboard");
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy ID:", err);
+      });
+  };
+
   if (!paste) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
     <div className="flex flex-col bg-white h-screen">
-      <header className="bg-gray-600 text-white p-2 flex items-center justify-between">
+      <header className="bg-gradient-to-r from-blue-500 via-yellow-500 to-red-500 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
-          <CodeIcon fontSize="large" className="mr-2" />
-          <h1 className="text-lg">{paste.title}</h1>
+          <div
+            className="w-12 h-12 flex items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
+            onClick={() => router.push("/")}
+          >
+            <CodeIcon fontSize="large" />
+          </div>
+          <h1 className="text-lg ml-2">{id}</h1>
+          <IconButton
+            onClick={handleCopyId}
+            size="small"
+            style={{
+              color: isCopied ? "#bbbbbb" : "#ffffff",
+              padding: 8,
+              transition: "background-color 0.3s ease, color 0.3s ease",
+            }}
+          >
+            <CopyIcon fontSize="small" />
+          </IconButton>
         </div>
       </header>
-      <Grid container direction="column" style={{ flexGrow: 1 }}>
-        <Grid item xs={12} sm={12} style={{ flex: 1 }}>
+      <div className="flex flex-col flex-1">
+        <Grid item xs={12} sm={12}>
           <div className="p-4 h-full flex flex-col">
+            <TextField
+              label="Title"
+              value={paste.title}
+              InputProps={{
+                readOnly: true,
+              }}
+              variant="outlined"
+              style={{ marginBottom: 16 }}
+            />
             <FullHeightTextField
               label="Content"
               value={paste.content}
@@ -127,7 +166,7 @@ const PastePage = () => {
             </div>
           </div>
         </Grid>
-      </Grid>
+      </div>
     </div>
   );
 };
