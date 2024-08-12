@@ -54,7 +54,7 @@ const Home = () => {
   const fetchPastes = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes`,
       );
       setPastes(response.data);
     } catch (error) {
@@ -65,7 +65,7 @@ const Home = () => {
   const createPaste = async () => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes`,
         { title, content },
       );
       const newPasteId = response.data.id;

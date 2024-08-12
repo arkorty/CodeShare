@@ -111,15 +111,15 @@ func main() {
 	}))
 
 	// Routes
-	e.GET("/", func(c echo.Context) error {
+	e.GET("/codeshare/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Backend is running alright.\n")
 	})
 
-	e.POST("/pastes", createPaste)
-	e.GET("/pastes", getPastes)
-	e.GET("/pastes/:id", getPaste)
-	e.PUT("/pastes/:id", updatePaste)
-	e.DELETE("/pastes/:id", deletePaste)
+	e.POST("/codeshare/pastes", createPaste)
+	e.GET("/codeshare/pastes", getPastes)
+	e.GET("/codeshare/pastes/:id", getPaste)
+	e.PUT("/codeshare/pastes/:id", updatePaste)
+	e.DELETE("/codeshare/pastes/:id", deletePaste)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }

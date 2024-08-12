@@ -5,9 +5,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "CodeShare",
-  description: "CodeShare is a platform for sharing and managing code snippets easily and efficiently.",
+  description:
+    "CodeShare is a platform for sharing and managing code snippets easily and efficiently.",
   icons: {
-    icon: '/favicon.ico',
+    icon: "/favicon.ico",
   },
 };
 

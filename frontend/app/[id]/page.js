@@ -49,7 +49,7 @@ const PastePage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes/${id}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
         );
         setPaste(response.data);
       } catch (error) {
@@ -70,7 +70,7 @@ const PastePage = () => {
   const handleSave = async () => {
     try {
       await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes/${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
         paste,
       );
     } catch (error) {
@@ -80,7 +80,9 @@ const PastePage = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/pastes/${id}`);
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
+      );
       setPaste(null);
       router.push("/");
     } catch (error) {
