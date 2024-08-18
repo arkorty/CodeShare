@@ -123,13 +123,13 @@ const PastePage = () => {
       <header className="bg-indigo-500 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
           <div
-            className="w-12 h-12 flex bg-zinc-800 items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
+            className="w-12 h-12 flex bg-zinc-800 items-center justify-center rounded-lg shadow-custom-dark cursor-pointer"
             onClick={() => router.push("/")}
           >
             <CodeIcon fontSize="large" />
           </div>
           <div
-            className={`relative inline-block font-semibold ml-4 ml-4 cursor-pointer rounded-xl ${isCopied ? "bg-indigo-600" : ""}`}
+            className={`relative inline-block font-semibold ml-4 ml-4 cursor-pointer rounded-lg ${isCopied ? "bg-indigo-600" : ""}`}
             onClick={handleCopyId}
             style={{
               transition: "background-color 0.3s ease, color 0.3s ease",
