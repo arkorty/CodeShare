@@ -30,9 +30,10 @@ const PastePage = () => {
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
         );
         setPaste(response.data);
+        setOriginalPaste(response.data);
       } catch (error) {
         console.error("Error fetching paste:", error);
-        router.push("/404");
+        router.push("/error");
       }
     };
 
