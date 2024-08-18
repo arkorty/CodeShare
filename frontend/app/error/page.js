@@ -30,7 +30,7 @@ export default function Custom404() {
         </div>
       </header>
 
-      <div className="flex items-center justify-center flex-1 bg-slate-800 p-4">
+      <div className="flex items-center justify-center flex-1 bg-zinc-800 p-4">
         <div className="text-center bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-8 shadow-2xl">
           <h1 className="text-9xl font-extrabold text-white tracking-widest mb-4">
             404
