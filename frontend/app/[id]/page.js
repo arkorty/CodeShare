@@ -74,7 +74,7 @@ const PastePage = () => {
       );
       setOriginalPaste(paste);
       setNotification({
-        message: "Saved successful!",
+        message: "Your code is safe with us!",
         type: "success", // Set type here
         visible: true,
       });
