@@ -107,9 +107,15 @@ const Home = () => {
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
               />
-              <Button variant="contained" color="primary" onClick={createPaste}>
-                Create Paste
-              </Button>
+              <div className="mt-4">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={createPaste}
+                >
+                  Create Paste
+                </Button>
+              </div>
               {currentPaste && (
                 <div
                   paste={currentPaste}

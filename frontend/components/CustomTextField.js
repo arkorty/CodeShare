@@ -50,7 +50,6 @@ const CustomTextField = ({ label, value, onChange }) => {
           },
         },
       }}
-      className="mb-4"
     />
   );
 };
