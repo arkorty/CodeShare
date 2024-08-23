@@ -7,6 +7,8 @@ services:
       - postgres
     networks:
       - docker
+    env_file:
+      - .env
 
   postgres:
     build: ./database
@@ -16,6 +18,8 @@ services:
       - pgdb:/var/lib/postgresql/data
     networks:
       - docker
+    env_file:
+      - .env
 
 networks:
   docker:
