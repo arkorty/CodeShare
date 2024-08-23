@@ -4,7 +4,9 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"time"
+	"fmt"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -23,7 +25,15 @@ type Paste struct {
 
 func init() {
 	var err error
-	db, err = gorm.Open("postgres", "host=postgres port=5432 user=postgres dbname=postgres password=postgres sslmode=disable")
+	db, err = gorm.Open("postgres", fmt.Sprintf(
+		"host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_SSLMODE"),
+	))
 	if err != nil {
 		panic(err)
 	}
