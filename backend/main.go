@@ -17,7 +17,7 @@ import (
 var db *gorm.DB
 
 type Paste struct {
-	ID        string    `gorm:"primary_key" json:"id"`
+	ID        string    `gorm:"primary_key;unique" json:"id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
 	CreatedAt time.Time `json:"created_at"`
@@ -37,7 +37,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	// Auto-migrate database
+
 	db.AutoMigrate(&Paste{})
 }
 
@@ -55,9 +55,20 @@ func createPaste(c echo.Context) error {
 	if err := c.Bind(paste); err != nil {
 		return err
 	}
+
+	for {
+		paste.ID = generateRandomString(6)
+
+		var existingPaste Paste
+		if err := db.Where("id = ?", paste.ID).First(&existingPaste).Error; err != nil && gorm.IsRecordNotFoundError(err) {
+			break
+		}
+	}
+
 	paste.CreatedAt = time.Now()
-	paste.ID = generateRandomString(6)
-	db.Create(paste)
+	if err := db.Create(paste).Error; err != nil {
+		return err
+	}
 	return c.JSON(http.StatusCreated, paste)
 }
 
@@ -112,7 +123,6 @@ func main() {
 
 	e := echo.New()
 
-	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -120,7 +130,6 @@ func main() {
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 	}))
 
-	// Routes
 	e.GET("/codeshare/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Backend is running alright.\n")
 	})
