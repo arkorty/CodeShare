@@ -19,7 +19,7 @@ const PastePage = () => {
   const [notification, setNotification] = useState({
     visible: false,
     message: "",
-    type: "", // Add type here
+    type: "",
   });
   const [originalPaste, setOriginalPaste] = useState(null);
 
@@ -61,7 +61,7 @@ const PastePage = () => {
     if (!hasChanges()) {
       setNotification({
         message: "Did you make any changes?",
-        type: "warning", // Set type here
+        type: "warning",
         visible: true,
       });
       return;
@@ -75,14 +75,14 @@ const PastePage = () => {
       setOriginalPaste(paste);
       setNotification({
         message: "Your code is safe with us!",
-        type: "success", // Set type here
+        type: "success",
         visible: true,
       });
     } catch (error) {
       console.error("Error saving paste:", error);
       setNotification({
         message: "Failed to save. Please try again.",
-        type: "error", // Set type here
+        type: "error",
         visible: true,
       });
     }
@@ -123,13 +123,13 @@ const PastePage = () => {
       <header className="bg-indigo-500 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
           <div
-            className="w-12 h-12 flex bg-zinc-800 items-center justify-center rounded-lg shadow-custom-dark cursor-pointer"
+            className="w-12 h-12 flex bg-zinc-800 items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
             onClick={() => router.push("/")}
           >
             <CodeIcon fontSize="large" />
           </div>
           <div
-            className={`relative inline-block font-semibold ml-4 ml-4 cursor-pointer rounded-lg ${isCopied ? "bg-indigo-600" : ""}`}
+            className={`relative inline-block font-semibold ml-4 cursor-pointer rounded-lg ${isCopied ? "bg-indigo-600" : ""}`}
             onClick={handleCopyId}
             style={{
               transition: "background-color 0.3s ease, color 0.3s ease",
@@ -209,7 +209,7 @@ const PastePage = () => {
       {notification.visible && (
         <Notification
           message={notification.message}
-          type={notification.type} // Pass type here
+          type={notification.type}
           onClose={() =>
             setNotification({ visible: false, message: "", type: "" })
           }
