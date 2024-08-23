@@ -187,7 +187,9 @@ const PastePage = () => {
             inputProps={{ "aria-label": "Live Mode Toggle" }}
           />
           <div
-            className={`relative inline-block font-semibold cursor-copy rounded-lg ${isCopied ? "bg-indigo-600" : ""}`}
+            className={`relative inline-block font-semibold cursor-copy rounded-lg ${
+              isCopied ? "bg-indigo-600" : ""
+            }`}
             onClick={handleCopyId}
             style={{
               transition: "background-color 0.3s ease, color 0.3s ease",
@@ -263,24 +265,26 @@ const PastePage = () => {
                 <ContentCopyIcon />
               </IconButton>
             </div>
-            <div className="mt-4">
-              <div className="space-x-4">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSave}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={handleDelete}
-                >
-                  Delete
-                </Button>
+            {!liveMode && (
+              <div className="mt-4">
+                <div className="space-x-4">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </Grid>
       </div>
