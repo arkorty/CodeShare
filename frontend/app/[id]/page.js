@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
-import { TextField, Button, Grid } from "@mui/material";
+import { TextField, Button, Grid, IconButton, Switch } from "@mui/material";
 import CustomTextField from "../../components/CustomTextField";
 import CodeIcon from "@mui/icons-material/Code";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Notification from "../../components/Notification";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env.local" });
@@ -22,6 +23,7 @@ const PastePage = () => {
     type: "",
   });
   const [originalPaste, setOriginalPaste] = useState(null);
+  const [liveMode, setLiveMode] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +43,26 @@ const PastePage = () => {
       fetchData();
     }
   }, [id]);
+
+  useEffect(() => {
+    let interval;
+    if (liveMode) {
+      interval = setInterval(async () => {
+        try {
+          const response = await axios.get(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
+          );
+          setPaste(response.data);
+        } catch (error) {
+          console.error("Error fetching live updates:", error);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [liveMode, id]);
 
   const handleTitleChange = (event) => {
     setPaste({ ...paste, title: event.target.value });
@@ -114,6 +136,25 @@ const PastePage = () => {
       });
   };
 
+  const handleCopyContent = () => {
+    navigator.clipboard
+      .writeText(paste.content)
+      .then(() => {
+        setNotification({
+          message: "Copied to clipboard!",
+          type: "success",
+          visible: true,
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy content:", err);
+      });
+  };
+
+  const handleToggleLiveMode = () => {
+    setLiveMode((prevMode) => !prevMode);
+  };
+
   if (!paste) {
     return null;
   }
@@ -128,11 +169,29 @@ const PastePage = () => {
           >
             <CodeIcon fontSize="large" />
           </div>
+          <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
+        </div>
+        <div className="flex items-center space-x-2 mr-2">
           <div
-            className={`relative inline-block font-semibold ml-4 cursor-pointer rounded-lg ${isCopied ? "bg-indigo-600" : ""}`}
+            className={`w-4 h-4 rounded-full ${
+              liveMode
+                ? "bg-red-500 border border-gray-700 animate-blink"
+                : "bg-indigo-500"
+            }`}
+            style={{ marginRight: 8 }}
+          ></div>
+          <Switch
+            checked={liveMode}
+            onChange={handleToggleLiveMode}
+            color="default"
+            inputProps={{ "aria-label": "Live Mode Toggle" }}
+          />
+          <div
+            className={`relative inline-block font-semibold cursor-copy rounded-lg ${isCopied ? "bg-indigo-600" : ""}`}
             onClick={handleCopyId}
             style={{
               transition: "background-color 0.3s ease, color 0.3s ease",
+              userSelect: "none",
             }}
           >
             <div className="absolute inset-0 bg-black opacity-30 rounded-lg"></div>
@@ -144,7 +203,7 @@ const PastePage = () => {
       </header>
       <div className="flex flex-col flex-1">
         <Grid item xs={12} sm={12}>
-          <div className="p-4 h-full flex flex-col">
+          <div className="p-4 h-full flex flex-col relative">
             <TextField
               label="Title"
               value={paste.title}
@@ -180,11 +239,30 @@ const PastePage = () => {
                 },
               }}
             />
-            <CustomTextField
-              label="Content"
-              value={paste.content}
-              onChange={handleContentChange}
-            />
+            <div className="relative flex-1">
+              <CustomTextField
+                label="Content"
+                value={paste.content}
+                onChange={handleContentChange}
+                multiline
+                rows={10}
+              />
+              <IconButton
+                onClick={handleCopyContent}
+                sx={{
+                  position: "absolute",
+                  bottom: 8,
+                  right: 8,
+                  color: "white",
+                  backgroundColor: "#6366f1",
+                  "&:hover": {
+                    backgroundColor: "#4f46e5",
+                  },
+                }}
+              >
+                <ContentCopyIcon />
+              </IconButton>
+            </div>
             <div className="mt-4">
               <div className="space-x-4">
                 <Button
