@@ -17,11 +17,19 @@ const Home = () => {
   const [content, setContent] = useState("");
   const [pastes, setPastes] = useState([]);
   const [currentPaste] = useState(null);
+  const [searchCode, setSearchCode] = useState("");
   const router = useRouter();
 
   useEffect(() => {
     fetchPastes();
   }, []);
+
+  useEffect(() => {
+    if (searchCode.length === 6) {
+      router.push(`/${searchCode}`);
+      setSearchCode("");
+    }
+  }, [searchCode, router]);
 
   const fetchPastes = async () => {
     try {
@@ -61,6 +69,36 @@ const Home = () => {
             <CodeIcon fontSize="large" />
           </div>
           <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
+        </div>
+        <div className="relative">
+          <h1 className="relative text-lg text-slate-100 px-2 py-1 rounded-lg">
+            <input
+              type="text"
+              value={searchCode}
+              onChange={(event) => setSearchCode(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && searchCode.length === 6) {
+                  router.push(`/${searchCode}`);
+                  setSearchCode("");
+                }
+              }}
+              style={{
+                backgroundColor: "transparent",
+                color: "#f1f5f9",
+                fontSize: "1.125rem",
+                fontWeight: "600",
+                border: "none",
+                borderRadius: "0.5rem",
+                borderBottom: "none",
+                width: "calc(6ch + 14px)",
+                outline: "none",
+                padding: "0.25rem 0.5rem",
+                boxSizing: "border-box",
+                position: "relative",
+                background: "rgba(0, 0, 0, 0.3)",
+              }}
+            />
+          </h1>
         </div>
       </header>
       <div className="flex flex-1 bg-zinc-800">
