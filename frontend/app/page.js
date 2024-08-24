@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
-import CustomCodeBlock from "../components/CustomCodeBlock";
+import ContentField from "../components/ContentField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
@@ -210,7 +210,7 @@ const Home = () => {
                   ))}
                 </TextField>
               </div>
-              <CustomCodeBlock
+              <ContentField
                 label="Content"
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
