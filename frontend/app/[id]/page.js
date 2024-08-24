@@ -161,45 +161,47 @@ const PastePage = () => {
 
   return (
     <div className="flex flex-col bg-zinc-800 h-screen text-slate-100">
-      <header className="bg-indigo-500 text-white p-2 flex items-center justify-between">
-        <div className="flex items-center">
-          <div
-            className="w-12 h-12 flex bg-zinc-800 items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
-            onClick={() => router.push("/")}
-          >
-            <CodeIcon fontSize="large" />
+      <header className="bg-indigo-500 text-white p-2 overflow-x-auto scrollbar-hide">
+        <div className="flex items-center justify-between min-w-max">
+          <div className="flex items-center">
+            <div
+              className="w-12 h-12 flex bg-zinc-800 items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
+              onClick={() => router.push("/")}
+            >
+              <CodeIcon fontSize="large" />
+            </div>
+            <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
           </div>
-          <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
-        </div>
-        <div className="flex items-center space-x-2 mr-2">
-          <div
-            className={`w-4 h-4 rounded-full ${
-              liveMode
-                ? "bg-red-500 border border-gray-700 animate-blink"
-                : "bg-indigo-500"
-            }`}
-            style={{ marginRight: 8 }}
-          ></div>
-          <Switch
-            checked={liveMode}
-            onChange={handleToggleLiveMode}
-            color="default"
-            inputProps={{ "aria-label": "Live Mode Toggle" }}
-          />
-          <div
-            className={`relative inline-block font-semibold cursor-copy rounded-lg ${
-              isCopied ? "bg-indigo-600" : ""
-            }`}
-            onClick={handleCopyId}
-            style={{
-              transition: "background-color 0.3s ease, color 0.3s ease",
-              userSelect: "none",
-            }}
-          >
-            <div className="absolute inset-0 bg-black opacity-30 rounded-lg"></div>
-            <h1 className="relative text-lg text-slate-100 px-2 py-1 rounded-lg">
-              {id}
-            </h1>
+          <div className="flex items-center space-x-2 mr-2">
+            <div
+              className={`w-4 h-4 rounded-full ${
+                liveMode
+                  ? "bg-red-500 border border-gray-700 animate-blink"
+                  : "bg-indigo-500"
+              }`}
+              style={{ marginRight: 8 }}
+            ></div>
+            <Switch
+              checked={liveMode}
+              onChange={handleToggleLiveMode}
+              color="default"
+              inputProps={{ "aria-label": "Live Mode Toggle" }}
+            />
+            <div
+              className={`relative inline-block font-semibold cursor-copy rounded-lg ${
+                isCopied ? "bg-indigo-600" : ""
+              }`}
+              onClick={handleCopyId}
+              style={{
+                transition: "background-color 0.3s ease, color 0.3s ease",
+                userSelect: "none",
+              }}
+            >
+              <div className="absolute inset-0 bg-black opacity-30 rounded-lg"></div>
+              <h1 className="relative text-lg text-slate-100 px-2 py-1 rounded-lg">
+                {id}
+              </h1>
+            </div>
           </div>
         </div>
       </header>
