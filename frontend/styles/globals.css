@@ -47,6 +47,7 @@ body {
   }
 }
 
+/* Keyframes for the blinking animatation */
 @keyframes blink {
   0% {
     opacity: 1;
@@ -59,6 +60,7 @@ body {
   }
 }
 
+/* Blinking animatation */
 .animate-blink {
   animation: blink 1.5s infinite;
 }

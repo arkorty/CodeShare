@@ -17,7 +17,7 @@ const Home = () => {
   const [content, setContent] = useState("");
   const [pastes, setPastes] = useState([]);
   const [currentPaste] = useState(null);
-  const [searchCode, setSearchCode] = useState("");
+  const [pasteId, setSearchCode] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -25,11 +25,11 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (searchCode.length === 6) {
-      router.push(`/${searchCode}`);
+    if (pasteId.length === 6) {
+      router.push(`/${pasteId}`);
       setSearchCode("");
     }
-  }, [searchCode, router]);
+  }, [pasteId, router]);
 
   const fetchPastes = async () => {
     try {
@@ -62,10 +62,7 @@ const Home = () => {
     <div className="flex flex-col h-screen">
       <header className="bg-indigo-500 text-white p-2 flex items-center justify-between">
         <div className="flex items-center">
-          <div
-            className="w-12 h-12 flex bg-gray-800 items-center justify-center rounded-xl shadow-custom-dark cursor-pointer"
-            onClick={() => router.push("/")}
-          >
+          <div className="w-12 h-12 flex bg-gray-800 items-center justify-center rounded-xl shadow-custom-dark cursor-pointer">
             <CodeIcon fontSize="large" />
           </div>
           <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
@@ -74,11 +71,11 @@ const Home = () => {
           <h1 className="relative text-lg text-slate-100 px-2 py-1 rounded-lg">
             <input
               type="text"
-              value={searchCode}
+              value={pasteId}
               onChange={(event) => setSearchCode(event.target.value)}
               onKeyDown={(event) => {
-                if (event.key === "Enter" && searchCode.length === 6) {
-                  router.push(`/${searchCode}`);
+                if (event.key === "Enter" && pasteId.length === 6) {
+                  router.push(`/${pasteId}`);
                   setSearchCode("");
                 }
               }}
