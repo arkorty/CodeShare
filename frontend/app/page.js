@@ -14,27 +14,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const languageOptions = [
-  { value: "javascript", label: "JavaScript" },
   { value: "python", label: "Python" },
   { value: "java", label: "Java" },
-  { value: "cpp", label: "C++" },
-  { value: "csharp", label: "C#" },
-  { value: "html", label: "HTML" },
-  { value: "css", label: "CSS" },
-  { value: "php", label: "PHP" },
-  { value: "ruby", label: "Ruby" },
-  { value: "swift", label: "Swift" },
-  { value: "kotlin", label: "Kotlin" },
-  { value: "typescript", label: "TypeScript" },
-  { value: "go", label: "Go" },
   { value: "rust", label: "Rust" },
-  { value: "scala", label: "Scala" },
-  { value: "haskell", label: "Haskell" },
-  { value: "perl", label: "Perl" },
-  { value: "lua", label: "Lua" },
-  { value: "r", label: "R" },
-  { value: "shell", label: "Shell" },
-  { value: "matlab", label: "MATLAB" },
+  { value: "go", label: "Go" },
+  { value: "cpp", label: "C++" },
+  { value: "sql", label: "SQL" },
+  { value: "html", label: "HTML" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "typescript", label: "TypeScript" },
 ];
 
 const Home = () => {
@@ -94,8 +82,8 @@ const Home = () => {
           </div>
           <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
         </div>
-        <div className="relative">
-          <h1 className="relative text-lg text-slate-100 px-2 py-1 rounded-lg">
+        <div className="relative flex justify-center items-center">
+          <h1 className="relative text-lg text-slate-100 px-2 py-1 rounded-lg flex items-center">
             <input
               type="text"
               value={pasteId}
@@ -106,6 +94,7 @@ const Home = () => {
                   setSearchCode("");
                 }
               }}
+              placeholder="Search"
               style={{
                 backgroundColor: "transparent",
                 color: "#f1f5f9",
@@ -114,12 +103,12 @@ const Home = () => {
                 border: "none",
                 borderRadius: "0.5rem",
                 borderBottom: "none",
-                width: "calc(6ch + 25px)",
+                width: "calc(6ch + 14px)",
                 outline: "none",
                 padding: "0.25rem 0.5rem",
                 boxSizing: "border-box",
-                position: "relative",
                 background: "rgba(0, 0, 0, 0.3)",
+                textAlign: "center",
               }}
             />
           </h1>
@@ -129,14 +118,13 @@ const Home = () => {
         <div className="flex flex-col flex-1">
           <Grid item xs={12} sm={12}>
             <div className="p-4 h-full flex flex-col relative">
-              <div className="flex flex-grow items-center gap-4">
+              <div className="flex flex-grow items-center gap-4 mb-4">
                 <TextField
                   label="Title"
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                   fullWidth
                   style={{
-                    marginBottom: 16,
                     backgroundColor: "#1e293b",
                     color: "#e2e8f0",
                   }}
@@ -164,7 +152,6 @@ const Home = () => {
                       },
                     },
                   }}
-                  className="mb-4"
                 />
                 <TextField
                   select
@@ -174,7 +161,6 @@ const Home = () => {
                   variant="outlined"
                   style={{
                     width: "144px",
-                    marginBottom: 16,
                     backgroundColor: "#1e293b",
                     color: "#e2e8f0",
                   }}

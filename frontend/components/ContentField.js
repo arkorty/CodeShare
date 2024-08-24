@@ -12,10 +12,13 @@ const ContentField = ({ value, onChange, readOnly, language }) => {
     readOnly: readOnly,
     minimap: { enabled: false },
     fontSize: 14,
-    wordWrap: "on",
+    wordWrap: "off",
     lineNumbers: "on",
     contextmenu: false,
-    scrollBeyondLastLine: false,
+    scrollbar: {
+      vertical: "hidden",
+      horizontal: "hidden",
+    },
     folding: false,
     highlightActiveIndentGuide: false,
     renderLineHighlight: "none",
@@ -35,6 +38,10 @@ const ContentField = ({ value, onChange, readOnly, language }) => {
     quickSuggestions: false,
     lightbulb: { enabled: false },
     forceLargeFileMode: true,
+    padding: {
+      top: 8,
+      bottom: 8,
+    },
   };
 
   useEffect(() => {
@@ -51,7 +58,7 @@ const ContentField = ({ value, onChange, readOnly, language }) => {
     if (!isMobile) {
       const calculateHeight = () => {
         const screenHeight = window.innerHeight;
-        const calculatedHeight = screenHeight - 256;
+        const calculatedHeight = screenHeight - 220;
         setHeight(`${calculatedHeight}px`);
       };
 

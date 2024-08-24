@@ -19,27 +19,15 @@ import dotenv from "dotenv";
 dotenv.config({ path: "./.env.local" });
 
 const languageOptions = [
-  { value: "javascript", label: "JavaScript" },
   { value: "python", label: "Python" },
   { value: "java", label: "Java" },
-  { value: "cpp", label: "C++" },
-  { value: "csharp", label: "C#" },
-  { value: "html", label: "HTML" },
-  { value: "css", label: "CSS" },
-  { value: "php", label: "PHP" },
-  { value: "ruby", label: "Ruby" },
-  { value: "swift", label: "Swift" },
-  { value: "kotlin", label: "Kotlin" },
-  { value: "typescript", label: "TypeScript" },
-  { value: "go", label: "Go" },
   { value: "rust", label: "Rust" },
-  { value: "scala", label: "Scala" },
-  { value: "haskell", label: "Haskell" },
-  { value: "perl", label: "Perl" },
-  { value: "lua", label: "Lua" },
-  { value: "r", label: "R" },
-  { value: "shell", label: "Shell" },
-  { value: "matlab", label: "MATLAB" },
+  { value: "go", label: "Go" },
+  { value: "cpp", label: "C++" },
+  { value: "sql", label: "SQL" },
+  { value: "html", label: "HTML" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "typescript", label: "TypeScript" },
 ];
 
 const PastePage = () => {
@@ -209,19 +197,25 @@ const PastePage = () => {
             <h1 className="text-2xl font-bold ml-4">CodeShare</h1>
           </div>
           <div className="flex items-center space-x-2 mr-2">
-            <div
-              className={`w-4 h-4 rounded-full ${
-                liveMode
-                  ? "bg-red-500 border border-gray-700 animate-blink"
-                  : "bg-indigo-500"
-              }`}
-              style={{ marginRight: 8 }}
-            ></div>
             <Switch
               checked={liveMode}
               onChange={handleToggleLiveMode}
               color="default"
               inputProps={{ "aria-label": "Live Mode Toggle" }}
+              sx={{
+                "& .MuiSwitch-switchBase": {
+                  color: liveMode ? "red" : "default",
+                },
+                "& .MuiSwitch-switchBase.Mui-checked": {
+                  color: liveMode ? "red" : "default",
+                },
+                "& .MuiSwitch-track": {
+                  backgroundColor: liveMode ? "red" : "default",
+                },
+                "& .MuiSwitch-track.Mui-checked": {
+                  backgroundColor: liveMode ? "red" : "default",
+                },
+              }}
             />
             <div
               className={`relative inline-block font-semibold cursor-copy rounded-lg ${
