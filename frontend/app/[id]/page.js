@@ -3,13 +3,44 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
-import { TextField, Button, Grid, IconButton, Switch } from "@mui/material";
-import CustomTextField from "../../components/CustomTextField";
+import {
+  TextField,
+  Button,
+  Grid,
+  IconButton,
+  Switch,
+  MenuItem,
+} from "@mui/material";
+import CustomCodeBlock from "../../components/CustomCodeBlock";
 import CodeIcon from "@mui/icons-material/Code";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Notification from "../../components/Notification";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env.local" });
+
+const languageOptions = [
+  { value: "javascript", label: "JavaScript" },
+  { value: "python", label: "Python" },
+  { value: "java", label: "Java" },
+  { value: "cpp", label: "C++" },
+  { value: "csharp", label: "C#" },
+  { value: "html", label: "HTML" },
+  { value: "css", label: "CSS" },
+  { value: "php", label: "PHP" },
+  { value: "ruby", label: "Ruby" },
+  { value: "swift", label: "Swift" },
+  { value: "kotlin", label: "Kotlin" },
+  { value: "typescript", label: "TypeScript" },
+  { value: "go", label: "Go" },
+  { value: "rust", label: "Rust" },
+  { value: "scala", label: "Scala" },
+  { value: "haskell", label: "Haskell" },
+  { value: "perl", label: "Perl" },
+  { value: "lua", label: "Lua" },
+  { value: "r", label: "R" },
+  { value: "shell", label: "Shell" },
+  { value: "matlab", label: "MATLAB" },
+];
 
 const PastePage = () => {
   const router = useRouter();
@@ -24,6 +55,7 @@ const PastePage = () => {
   });
   const [originalPaste, setOriginalPaste] = useState(null);
   const [liveMode, setLiveMode] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("python");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,6 +102,10 @@ const PastePage = () => {
 
   const handleContentChange = (event) => {
     setPaste({ ...paste, content: event.target.value });
+  };
+
+  const handleLanguageChange = (event) => {
+    setSelectedLanguage(event.target.value);
   };
 
   const hasChanges = () => {
@@ -208,48 +244,91 @@ const PastePage = () => {
       <div className="flex flex-col flex-1">
         <Grid item xs={12} sm={12}>
           <div className="p-4 h-full flex flex-col relative">
-            <TextField
-              label="Title"
-              value={paste.title}
-              onChange={handleTitleChange}
-              variant="outlined"
-              style={{
-                marginBottom: 16,
-                backgroundColor: "#1e293b",
-                color: "#e2e8f0",
-              }}
-              InputProps={{
-                style: {
-                  backgroundColor: "#27272a",
+            <div className="flex flex-grow items-center gap-4 mb-4">
+              <TextField
+                label="Title"
+                value={paste.title}
+                onChange={handleTitleChange}
+                variant="outlined"
+                style={{
+                  flexGrow: 1,
+                  backgroundColor: "#1e293b",
                   color: "#e2e8f0",
-                },
-              }}
-              InputLabelProps={{
-                style: {
+                }}
+                InputProps={{
+                  style: {
+                    backgroundColor: "#27272a",
+                    color: "#e2e8f0",
+                  },
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: "#e2e8f0",
+                  },
+                }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#4b5563",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#6366f1",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#6366f1",
+                    },
+                  },
+                }}
+              />
+              <TextField
+                select
+                label="Language"
+                value={selectedLanguage}
+                onChange={handleLanguageChange}
+                variant="outlined"
+                style={{
+                  width: "128px",
+                  backgroundColor: "#1e293b",
                   color: "#e2e8f0",
-                },
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#4b5563",
+                }}
+                InputProps={{
+                  style: {
+                    backgroundColor: "#27272a",
+                    color: "#e2e8f0",
                   },
-                  "&:hover fieldset": {
-                    borderColor: "#6366f1",
+                }}
+                InputLabelProps={{
+                  style: {
+                    color: "#e2e8f0",
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#6366f1",
+                }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#4b5563",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#6366f1",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#6366f1",
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              >
+                {languageOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
             <div className="relative flex-1">
-              <CustomTextField
-                label="Content"
+              <CustomCodeBlock
                 value={paste.content}
                 onChange={handleContentChange}
-                multiline
-                rows={10}
+                readOnly={liveMode}
+                language={selectedLanguage}
               />
               <IconButton
                 onClick={handleCopyContent}
