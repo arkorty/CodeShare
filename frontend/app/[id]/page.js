@@ -42,6 +42,7 @@ const PastePage = () => {
         );
         setPaste(response.data);
         setOriginalPaste(response.data);
+        setSelectedLanguage(response.data.lang);
       } catch (error) {
         console.error("Error fetching paste:", error);
         router.push("/error");
@@ -62,6 +63,7 @@ const PastePage = () => {
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
           );
           setPaste(response.data);
+          setSelectedLanguage(response.data.lang);
         } catch (error) {
           console.error("Error fetching live updates:", error);
         }
@@ -83,12 +85,14 @@ const PastePage = () => {
 
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
+    setPaste({ ...paste, lang: event.target.value });
   };
 
   const hasChanges = () => {
     return (
       paste.title !== originalPaste.title ||
-      paste.content !== originalPaste.content
+      paste.content !== originalPaste.content ||
+      paste.lang !== originalPaste.lang
     );
   };
 
@@ -105,9 +109,9 @@ const PastePage = () => {
     try {
       await axios.put(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes/${id}`,
-        paste,
+        { ...paste, lang: selectedLanguage },
       );
-      setOriginalPaste(paste);
+      setOriginalPaste({ ...paste, lang: selectedLanguage });
       setNotification({
         message: "Your code is safe with us!",
         type: "success",

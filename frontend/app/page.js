@@ -49,13 +49,13 @@ const Home = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/codeshare/pastes`,
-        { title, content, language: selectedLanguage },
+        { title, content, lang: selectedLanguage },
       );
       const newPasteId = response.data.id;
       fetchPastes();
       setTitle("");
       setContent("");
-      setSelectedLanguage("javascript");
+      setSelectedLanguage("text");
       router.push(`/${newPasteId}`);
     } catch (error) {
       console.error("Error creating paste:", error);
