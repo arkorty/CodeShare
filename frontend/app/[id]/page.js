@@ -11,7 +11,7 @@ import {
   Switch,
   MenuItem,
 } from "@mui/material";
-import ContentField from "../../components/ContentField";
+import CodeBlock from "../../components/CodeBlock";
 import CodeIcon from "@mui/icons-material/Code";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Notification from "../../components/Notification";
@@ -311,7 +311,7 @@ const PastePage = () => {
               </TextField>
             </div>
             <div className="relative flex-1">
-              <ContentField
+              <CodeBlock
                 value={paste.content}
                 onChange={handleContentChange}
                 readOnly={liveMode}
