@@ -7,7 +7,7 @@ import "ace-builds/src-noconflict/mode-rust";
 import "ace-builds/src-noconflict/mode-golang";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-sql";
-import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/mode-sh";
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-typescript";
 
