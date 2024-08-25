@@ -14,12 +14,14 @@
     "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
+    "ace-builds": "^1.36.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "lodash.debounce": "^4.0.8",
     "next": "14.2.5",
     "react": "^18",
+    "react-ace": "^12.0.0",
     "react-dom": "^18"
   },
   "devDependencies": {

@@ -1,109 +1,73 @@
-import { useState, useEffect } from "react";
-import Editor from "@monaco-editor/react";
-import { TextField } from "@mui/material";
-import SimpleContentField from "./SimpleContentField";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-rust";
+import "ace-builds/src-noconflict/mode-golang";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/mode-sql";
+import "ace-builds/src-noconflict/mode-html";
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/mode-typescript";
+
+import "ace-builds/src-noconflict/theme-monokai";
+
 import debounce from "lodash.debounce";
 
 const ContentField = ({ value, onChange, readOnly, language }) => {
-  const [isMobile, setIsMobile] = useState(false);
   const [height, setHeight] = useState("auto");
+  const editorRef = useRef(null);
 
-  const options = {
-    readOnly: readOnly,
-    minimap: { enabled: false },
-    fontSize: 14,
-    wordWrap: "off",
-    lineNumbers: "on",
-    contextmenu: false,
-    scrollbar: {
-      vertical: "hidden",
-      horizontal: "hidden",
-    },
-    folding: false,
-    highlightActiveIndentGuide: false,
-    renderLineHighlight: "none",
-    renderWhitespace: "none",
-    overviewRulerBorder: false,
-    overviewRulerLanes: 0,
-    renderIndentGuides: true,
-    automaticLayout: true,
-    cursorStyle: "line",
-    links: false,
-    occurrencesHighlight: false,
-    selectionHighlight: false,
-    suggestOnTriggerCharacters: false,
-    acceptSuggestionOnEnter: "off",
-    tabCompletion: "off",
-    wordBasedSuggestions: false,
-    quickSuggestions: false,
-    lightbulb: { enabled: false },
-    forceLargeFileMode: true,
-    padding: {
-      top: 8,
-      bottom: 8,
-    },
-  };
+  const calculateHeight = useMemo(
+    () =>
+      debounce(() => {
+        const screenHeight = window.innerHeight;
+        setHeight(`${screenHeight - 220}px`);
+      }, 200),
+    [],
+  );
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+    calculateHeight();
+    window.addEventListener("resize", calculateHeight);
+    return () => window.removeEventListener("resize", calculateHeight);
+  }, [calculateHeight]);
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current.editor;
+      editor.getSession().setUseWrapMode(true);
+    }
   }, []);
 
-  useEffect(() => {
-    if (!isMobile) {
-      const calculateHeight = () => {
-        const screenHeight = window.innerHeight;
-        const calculatedHeight = screenHeight - 220;
-        setHeight(`${calculatedHeight}px`);
-      };
-
-      const debouncedCalculateHeight = debounce(calculateHeight, 200);
-
-      calculateHeight();
-      window.addEventListener("resize", debouncedCalculateHeight);
-      return () =>
-        window.removeEventListener("resize", debouncedCalculateHeight);
-    }
-  }, [isMobile]);
-
-  const handleEditorChange = (newValue) => {
+  const handleChange = (newValue) => {
     if (onChange) {
       onChange({ target: { value: newValue } });
     }
   };
 
-  if (isMobile && !readOnly) {
-    return (
-      <SimpleContentField
-        label="Code"
-        value={value}
-        onChange={(e) => handleEditorChange(e.target.value)}
-      />
-    );
-  }
-
   return (
-    <div
-      className="w-full overflow-auto rounded-md"
+    <AceEditor
+      ref={editorRef}
+      mode={language}
+      theme="monokai"
+      onChange={handleChange}
+      value={value}
+      name="UNIQUE_ID_OF_DIV"
+      editorProps={{ $blockScrolling: true }}
+      setOptions={{
+        useWorker: false,
+        showPrintMargin: false,
+        readOnly: readOnly,
+      }}
       style={{
+        width: "100%",
         height: height,
         border: "1px solid #4b5563",
       }}
-    >
-      <Editor
-        height={height}
-        language={language}
-        value={value}
-        onChange={handleEditorChange}
-        theme="vs-dark"
-        options={options}
-      />
-    </div>
+      fontSize={14}
+    />
   );
 };
 

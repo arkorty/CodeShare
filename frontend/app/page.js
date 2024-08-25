@@ -9,21 +9,10 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import CodeIcon from "@mui/icons-material/Code";
+import languageOptions from "../lib/LanguageOptions";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const languageOptions = [
-  { value: "python", label: "Python" },
-  { value: "java", label: "Java" },
-  { value: "rust", label: "Rust" },
-  { value: "go", label: "Go" },
-  { value: "cpp", label: "C++" },
-  { value: "sql", label: "SQL" },
-  { value: "html", label: "HTML" },
-  { value: "javascript", label: "JavaScript" },
-  { value: "typescript", label: "TypeScript" },
-];
 
 const Home = () => {
   const [title, setTitle] = useState("");
@@ -31,7 +20,7 @@ const Home = () => {
   const [pastes, setPastes] = useState([]);
   const [currentPaste] = useState(null);
   const [pasteId, setSearchCode] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("python");
+  const [selectedLanguage, setSelectedLanguage] = useState("text");
   const router = useRouter();
 
   useEffect(() => {

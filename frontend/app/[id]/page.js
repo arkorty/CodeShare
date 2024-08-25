@@ -15,20 +15,9 @@ import ContentField from "../../components/ContentField";
 import CodeIcon from "@mui/icons-material/Code";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Notification from "../../components/Notification";
+import languageOptions from "../../lib/LanguageOptions";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env.local" });
-
-const languageOptions = [
-  { value: "python", label: "Python" },
-  { value: "java", label: "Java" },
-  { value: "rust", label: "Rust" },
-  { value: "go", label: "Go" },
-  { value: "cpp", label: "C++" },
-  { value: "sql", label: "SQL" },
-  { value: "html", label: "HTML" },
-  { value: "javascript", label: "JavaScript" },
-  { value: "typescript", label: "TypeScript" },
-];
 
 const PastePage = () => {
   const router = useRouter();
@@ -43,7 +32,7 @@ const PastePage = () => {
   });
   const [originalPaste, setOriginalPaste] = useState(null);
   const [liveMode, setLiveMode] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("python");
+  const [selectedLanguage, setSelectedLanguage] = useState("text");
 
   useEffect(() => {
     const fetchData = async () => {
