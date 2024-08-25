@@ -20,6 +20,7 @@ type Paste struct {
 	ID        string    `gorm:"primary_key;unique" json:"id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
+	Lang      string    `gorm:"type:varchar(16)" json:"lang"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -103,6 +104,7 @@ func updatePaste(c echo.Context) error {
 	}
 	paste.Title = newPaste.Title
 	paste.Content = newPaste.Content
+	paste.Lang = newPaste.Lang
 	db.Save(&paste)
 	return c.JSON(http.StatusOK, paste)
 }
