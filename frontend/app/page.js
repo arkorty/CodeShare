@@ -3,16 +3,21 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import TextField from "@mui/material/TextField";
-import CodeBlock from "../components/CodeBlock";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import MenuItem from "@mui/material/MenuItem";
+import {
+  Button,
+  Grid,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  TextField,
+} from "@mui/material";
 import CodeIcon from "@mui/icons-material/Code";
 import languageOptions from "../lib/LanguageOptions";
+import CodeBlock from "../components/CodeBlock";
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ path: "./.env.local" });
 
 const Home = () => {
   const [title, setTitle] = useState("");
@@ -116,6 +121,7 @@ const Home = () => {
                   style={{
                     backgroundColor: "#1e293b",
                     color: "#e2e8f0",
+                    flex: "1 1 90%",
                   }}
                   InputProps={{
                     style: {
@@ -142,27 +148,13 @@ const Home = () => {
                     },
                   }}
                 />
-                <TextField
-                  select
-                  label="Language"
-                  value={selectedLanguage}
-                  onChange={(event) => setSelectedLanguage(event.target.value)}
-                  variant="outlined"
+                <FormControl
+                  fullWidth
                   style={{
-                    width: "144px",
                     backgroundColor: "#1e293b",
                     color: "#e2e8f0",
-                  }}
-                  InputProps={{
-                    style: {
-                      backgroundColor: "#27272a",
-                      color: "#e2e8f0",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: {
-                      color: "#e2e8f0",
-                    },
+                    flex: "1 1 10%",
+                    minWidth: "120px",
                   }}
                   sx={{
                     "& .MuiOutlinedInput-root": {
@@ -178,12 +170,64 @@ const Home = () => {
                     },
                   }}
                 >
-                  {languageOptions.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  <InputLabel
+                    htmlFor="language"
+                    sx={{
+                      color: "#e2e8f0",
+                      "&.Mui-focused": {
+                        color: "#e2e8f0",
+                      },
+                    }}
+                  >
+                    Language
+                  </InputLabel>
+                  <Select
+                    id="language"
+                    value={selectedLanguage}
+                    onChange={(event) =>
+                      setSelectedLanguage(event.target.value)
+                    }
+                    label="Language"
+                    MenuProps={{
+                      PaperProps: {
+                        style: {
+                          backgroundColor: "#27272a",
+                          color: "#e2e8f0",
+                        },
+                      },
+                    }}
+                    sx={{
+                      backgroundColor: "#27272a",
+                      color: "#e2e8f0",
+                      "& .MuiOutlinedInput-root": {
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#4b5563",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#6366f1",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#6366f1",
+                        },
+                      },
+                    }}
+                  >
+                    {languageOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                        sx={{
+                          "&:focus": {
+                            outline: "none",
+                            backgroundColor: "#1f2937",
+                          },
+                        }}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </div>
               <CodeBlock
                 label="Content"

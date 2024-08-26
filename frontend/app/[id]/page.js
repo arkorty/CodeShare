@@ -5,8 +5,11 @@ import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
 import {
   TextField,
+  InputLabel,
+  Select,
   Button,
   Grid,
+  FormControl,
   IconButton,
   Switch,
   MenuItem,
@@ -16,8 +19,6 @@ import CodeIcon from "@mui/icons-material/Code";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Notification from "../../components/Notification";
 import languageOptions from "../../lib/LanguageOptions";
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env.local" });
 
 const PastePage = () => {
   const router = useRouter();
@@ -238,9 +239,9 @@ const PastePage = () => {
                 onChange={handleTitleChange}
                 variant="outlined"
                 style={{
-                  flexGrow: 1,
                   backgroundColor: "#1e293b",
                   color: "#e2e8f0",
+                  flex: "1 1 90%",
                 }}
                 InputProps={{
                   style: {
@@ -267,27 +268,13 @@ const PastePage = () => {
                   },
                 }}
               />
-              <TextField
-                select
-                label="Language"
-                value={selectedLanguage}
-                onChange={handleLanguageChange}
-                variant="outlined"
+              <FormControl
+                fullWidth
                 style={{
-                  width: "128px",
                   backgroundColor: "#1e293b",
                   color: "#e2e8f0",
-                }}
-                InputProps={{
-                  style: {
-                    backgroundColor: "#27272a",
-                    color: "#e2e8f0",
-                  },
-                }}
-                InputLabelProps={{
-                  style: {
-                    color: "#e2e8f0",
-                  },
+                  flex: "1 1 10%",
+                  minWidth: "120px",
                 }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
@@ -303,12 +290,62 @@ const PastePage = () => {
                   },
                 }}
               >
-                {languageOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+                <InputLabel
+                  htmlFor="language"
+                  sx={{
+                    color: "#e2e8f0",
+                    "&.Mui-focused": {
+                      color: "#e2e8f0",
+                    },
+                  }}
+                >
+                  Language
+                </InputLabel>
+                <Select
+                  id="language"
+                  value={selectedLanguage}
+                  onChange={(event) => setSelectedLanguage(event.target.value)}
+                  label="Language"
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        backgroundColor: "#27272a",
+                        color: "#e2e8f0",
+                      },
+                    },
+                  }}
+                  sx={{
+                    backgroundColor: "#27272a",
+                    color: "#e2e8f0",
+                    "& .MuiOutlinedInput-root": {
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#4b5563",
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#6366f1",
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#6366f1",
+                      },
+                    },
+                  }}
+                >
+                  {languageOptions.map((option) => (
+                    <MenuItem
+                      key={option.value}
+                      value={option.value}
+                      sx={{
+                        "&:focus": {
+                          outline: "none",
+                          backgroundColor: "#1f2937",
+                        },
+                      }}
+                    >
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </div>
             <div className="relative flex-1">
               <CodeBlock
